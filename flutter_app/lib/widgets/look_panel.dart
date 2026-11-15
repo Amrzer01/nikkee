@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/catalog.dart';
@@ -127,53 +128,58 @@ class LookPanelState extends State<LookPanel> {
     String countText,
   ) {
     final c = widget.controller;
-    return Transform.translate(
-      offset: const Offset(0, -RunwayMetrics.mobilePanelRadius),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: RunwayColors.panel,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(RunwayMetrics.mobilePanelRadius),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: RunwayColors.panel,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(RunwayMetrics.mobilePanelRadius),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Expanded(
-                    child: Text(
-                      look.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: runwayTextStyle(fontSize: 16),
-                    ),
+        boxShadow: [
+          BoxShadow(
+            color: RunwayColors.text.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, -3),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Expanded(
+                  child: Text(
+                    look.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: runwayTextStyle(fontSize: 16),
                   ),
-                  const SizedBox(width: 12),
-                  Text(
-                    countText.toUpperCase(),
-                    style: runwayTextStyle(
-                      fontSize: 9,
-                      letterSpacing: 1.44,
-                      color: RunwayColors.muted,
-                      tabular: true,
-                    ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  countText.toUpperCase(),
+                  style: runwayTextStyle(
+                    fontSize: 9,
+                    letterSpacing: 1.44,
+                    color: RunwayColors.muted,
+                    tabular: true,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 92,
-              child: ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 6),
+          ),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
                 itemCount: look.productIds.length,
                 itemBuilder: (context, idx) {
                   final cardNum = idx + 1;
@@ -214,8 +220,7 @@ class LookPanelState extends State<LookPanel> {
             _BundleFooter(controller: c, isMobile: true, lookIndex: look.index),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Future<void> _openMobileSheet(
@@ -696,8 +701,9 @@ class _BundleFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final msg = controller.bundleMessage(lookIndex);
     final isComplete = controller.isLookComplete(lookIndex);
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
     final pad = isMobile
-        ? const EdgeInsets.fromLTRB(20, 10, 20, 16)
+        ? EdgeInsets.fromLTRB(20, 8, 20, math.max(12.0, bottomInset + 8.0))
         : const EdgeInsets.fromLTRB(32, 20, 32, 30);
 
     return Container(
@@ -728,26 +734,29 @@ class _BundleFooter extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Complete the look',
-                      style: runwayTextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Complete the look',
+                        style: runwayTextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      'Bundle all 3 and save 10%',
-                      style: runwayTextStyle(
-                        fontSize: 11,
-                        color: RunwayColors.muted,
+                      const SizedBox(height: 3),
+                      Text(
+                        'Bundle all 3 and save 10%',
+                        style: runwayTextStyle(
+                          fontSize: 11,
+                          color: RunwayColors.muted,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                const SizedBox(width: 8),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,

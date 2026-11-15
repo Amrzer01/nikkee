@@ -20,90 +20,92 @@ class SiteHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height =
-        isMobile ? RunwayMetrics.mobileHeaderHeight : RunwayMetrics.desktopHeaderHeight;
+    final topInset = MediaQuery.paddingOf(context).top;
+    final contentHeight = isMobile ? 54.0 : 64.0;
     final hPad = isMobile ? 20.0 : 40.0;
     final gap = isMobile ? 18.0 : 32.0;
 
     return Container(
-      height: height,
-      padding: EdgeInsets.symmetric(horizontal: hPad),
+      padding: EdgeInsets.fromLTRB(hPad, topInset, hPad, 0),
       decoration: const BoxDecoration(
         color: RunwayColors.stage,
         border: Border(bottom: BorderSide(color: RunwayColors.headerBorder)),
       ),
-      child: Row(
-        children: [
-          Semantics(
-            label: 'Runway home',
-            button: true,
-            child: InkWell(
-              onTap: onHomeTap,
-              child: SizedBox(
-                width: isMobile ? 48 : 68,
-                height: isMobile ? 17 : 24,
-                child: SvgPicture.network(
-                  RunwayCatalog.nikeLogoSvgUrl,
-                  fit: BoxFit.contain,
-                  semanticsLabel: 'Nike',
-                  placeholderBuilder: (_) => const SizedBox.shrink(),
+      child: SizedBox(
+        height: contentHeight,
+        child: Row(
+          children: [
+            Semantics(
+              label: 'Runway home',
+              button: true,
+              child: InkWell(
+                onTap: onHomeTap,
+                child: SizedBox(
+                  width: isMobile ? 48 : 68,
+                  height: isMobile ? 17 : 24,
+                  child: SvgPicture.network(
+                    RunwayCatalog.nikeLogoSvgUrl,
+                    fit: BoxFit.contain,
+                    semanticsLabel: 'Nike',
+                    placeholderBuilder: (_) => const SizedBox.shrink(),
+                  ),
                 ),
               ),
             ),
-          ),
-          const Spacer(),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _NavLink(label: 'Home', isMobile: isMobile, onTap: onHomeTap),
-              if (!isMobile) ...[
-                SizedBox(width: 28),
-                _NavLink(
-                  label: 'Nike Orbit',
-                  isMobile: isMobile,
-                  onTap: () => _launchExternal('https://nike-makknzjs.myshopify.com/pages/nike-orbit'),
-                ),
-                const SizedBox(width: 28),
-                _NavLink(
-                  label: 'Hand Rail Pro',
-                  isMobile: isMobile,
-                  onTap: () => _launchExternal('https://nike-makknzjs.myshopify.com/pages/scene-rail'),
-                ),
+            const Spacer(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _NavLink(label: 'Home', isMobile: isMobile, onTap: onHomeTap),
+                if (!isMobile) ...[
+                  const SizedBox(width: 28),
+                  _NavLink(
+                    label: 'Nike Orbit',
+                    isMobile: isMobile,
+                    onTap: () => _launchExternal('https://nike-makknzjs.myshopify.com/pages/nike-orbit'),
+                  ),
+                  const SizedBox(width: 28),
+                  _NavLink(
+                    label: 'Hand Rail Pro',
+                    isMobile: isMobile,
+                    onTap: () => _launchExternal('https://nike-makknzjs.myshopify.com/pages/scene-rail'),
+                  ),
+                ],
+                SizedBox(width: isMobile ? 14 : 28),
+                _NavLink(label: 'Runway', isMobile: isMobile, isCurrent: true, onTap: onHomeTap),
               ],
-              SizedBox(width: isMobile ? 14 : 28),
-              _NavLink(label: 'Runway', isMobile: isMobile, isCurrent: true, onTap: onHomeTap),
-            ],
-          ),
-          SizedBox(width: isMobile ? 8 : gap),
-          Semantics(
-            label: 'Open styling bag',
-            button: true,
-            child: InkWell(
-              onTap: onOpenBag,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 22,
-                      height: 24,
-                      child: CustomPaint(painter: _BagIconPainter()),
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      '$bagCount',
-                      style: runwayTextStyle(
-                        fontSize: 10,
-                        tabular: true,
+            ),
+            SizedBox(width: isMobile ? 8 : gap),
+            Semantics(
+              label: 'Open styling bag',
+              button: true,
+              child: InkWell(
+                onTap: onOpenBag,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 22,
+                        height: 24,
+                        child: CustomPaint(painter: _BagIconPainter()),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 5),
+                      Text(
+                        '$bagCount',
+                        style: runwayTextStyle(
+                          fontSize: 10,
+                          tabular: true,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

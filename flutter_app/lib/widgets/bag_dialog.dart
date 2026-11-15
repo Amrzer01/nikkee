@@ -33,21 +33,22 @@ class StylingBagDialog extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final dialogWidth = (screenWidth - 32).clamp(280.0, 560.0);
 
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        width: dialogWidth,
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.85,
-        ),
-        decoration: BoxDecoration(
-          color: RunwayColors.panel,
-          border: Border.all(color: const Color(0xFFD9D9D9)),
-        ),
-        padding: const EdgeInsets.all(24),
-        child: AnimatedBuilder(
-          animation: bag,
-          builder: (context, _) {
+    return SafeArea(
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          width: dialogWidth,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * 0.85,
+          ),
+          decoration: BoxDecoration(
+            color: RunwayColors.panel,
+            border: Border.all(color: const Color(0xFFD9D9D9)),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: AnimatedBuilder(
+            animation: bag,
+            builder: (context, _) {
             final entries = bag.entries;
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -217,6 +218,7 @@ class StylingBagDialog extends StatelessWidget {
           },
         ),
       ),
+    ),
     );
   }
 

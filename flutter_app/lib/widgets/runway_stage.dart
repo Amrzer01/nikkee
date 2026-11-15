@@ -70,7 +70,7 @@ class _RunwayStageColumnState extends State<RunwayStageColumn>
     }
 
     final headPad = widget.isMobile
-        ? const EdgeInsets.fromLTRB(20, 30, 20, 0)
+        ? const EdgeInsets.fromLTRB(20, 14, 20, 0)
         : const EdgeInsets.fromLTRB(56, 44, 56, 0);
 
     return Container(
@@ -121,7 +121,7 @@ class _RunwayStageColumnState extends State<RunwayStageColumn>
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: widget.isMobile ? 20 : 0),
+                  padding: EdgeInsets.only(bottom: widget.isMobile ? 6 : 0),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       final w = constraints.maxWidth;
@@ -414,20 +414,23 @@ class _RunwayStageColumnState extends State<RunwayStageColumn>
           ),
           const SizedBox(width: 20),
           Expanded(
-            child: Row(
-              children: [
-                for (var i = 0; i < lookCount; i++) ...[
-                  if (i > 0) const SizedBox(width: 6),
-                  _TickControl(
-                    look: RunwayCatalog.looks[i],
-                    active: i == c.index,
-                    past: i < c.index,
-                    playing: c.playing,
-                    autoBarAnim: _autoBarCtrl,
-                    onTap: () => c.go(i),
-                  ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (var i = 0; i < lookCount; i++) ...[
+                    if (i > 0) const SizedBox(width: 6),
+                    _TickControl(
+                      look: RunwayCatalog.looks[i],
+                      active: i == c.index,
+                      past: i < c.index,
+                      playing: c.playing,
+                      autoBarAnim: _autoBarCtrl,
+                      onTap: () => c.go(i),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
           const SizedBox(width: 20),

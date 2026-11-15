@@ -150,64 +150,46 @@ class _RunwayScreenState extends State<RunwayScreen>
           builder: (context, _) {
             final size = MediaQuery.sizeOf(context);
             final isMobile = size.width <= 749.0;
-            final headerH = isMobile
-                ? RunwayMetrics.mobileHeaderHeight
-                : RunwayMetrics.desktopHeaderHeight;
-            final frameH = computeFrameHeight(
-              isMobile: isMobile,
-              viewportHeight: size.height,
-              headerHeight: headerH,
-              mheightVh: 109.0,
-            );
 
             return Stack(
               children: [
                 if (isMobile)
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SiteHeader(
-                          isMobile: true,
-                          bagCount: _bag.totalCount,
-                          onHomeTap: () => _controller.go(0),
-                          onOpenBag: () => showStylingBagDialog(context, _bag),
-                        ),
-                        SizedBox(
-                          height: frameH,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Stack(
-                                  children: [
-                                    RunwayStageColumn(
-                                      controller: _controller,
-                                      isMobile: true,
-                                      onRevealCard: (n) =>
-                                          _panelKey.currentState?.revealCard(n),
-                                    ),
-                                    if (_controller.zoomed)
-                                      LookLightboxOverlay(
-                                        controller: _controller,
-                                        isMobile: true,
-                                        onPinTap: (n) {
-                                          _controller.engage();
-                                          _controller.setHotCard(n);
-                                          _panelKey.currentState?.revealCard(n);
-                                        },
-                                      ),
-                                  ],
-                                ),
-                              ),
-                              LookPanel(
-                                key: _panelKey,
+                  Column(
+                    children: [
+                      SiteHeader(
+                        isMobile: true,
+                        bagCount: _bag.totalCount,
+                        onHomeTap: () => _controller.go(0),
+                        onOpenBag: () => showStylingBagDialog(context, _bag),
+                      ),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            RunwayStageColumn(
+                              controller: _controller,
+                              isMobile: true,
+                              onRevealCard: (n) =>
+                                  _panelKey.currentState?.revealCard(n),
+                            ),
+                            if (_controller.zoomed)
+                              LookLightboxOverlay(
                                 controller: _controller,
                                 isMobile: true,
+                                onPinTap: (n) {
+                                  _controller.engage();
+                                  _controller.setHotCard(n);
+                                  _panelKey.currentState?.revealCard(n);
+                                },
                               ),
-                            ],
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      LookPanel(
+                        key: _panelKey,
+                        controller: _controller,
+                        isMobile: true,
+                      ),
+                    ],
                   )
                 else
                   Column(
